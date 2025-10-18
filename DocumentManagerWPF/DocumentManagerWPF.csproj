@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DocumentManager.Data\DocumentManager.Data.csproj" />
+    <ProjectReference Include="..\DocumentManager.Domain\DocumentManager.Domain.csproj" />
+    <ProjectReference Include="..\DocumentManager.Services\DocumentManager.Services.csproj" />
+  </ItemGroup>
+
+</Project>
