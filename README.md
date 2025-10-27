@@ -6,13 +6,13 @@ DocumentManager to prosta aplikacja desktopowa oparta na WPF (.NET 8). Umożliwi
 
 **Technologies**
 
-.NET 8
-WPF (Windows Presentation Foundation)
-Entity Framework Core
-SQL Server
-CSV (import/eksport danych)
-.NET 8 SDK
-NuGet packages:
+- .NET 8
+- WPF (Windows Presentation Foundation)
+- Entity Framework Core
+- SQL Server
+- CSV (import/eksport danych)
+- .NET 8 SDK
+- NuGet packages:
   - CsvHelper
   - Microsoft.EntityFrameworkCore
   - Microsoft.EntityFrameworkCore.SqlServer
