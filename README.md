@@ -38,7 +38,7 @@ Uruchom projekt z poziomu Visual Studio (F5) lub poleceniem:
 dotnet run
 ```
 W aplikacji możesz:
--Zaimportować dane z pliku CSV
--Edytować dokumenty i ich pozycje
--Zatwierdzić zmiany do bazy danych
--Filtrować, wyszukiwać i eksportować dane
+- Zaimportować dane z pliku CSV
+- Edytować dokumenty i ich pozycje
+- Zatwierdzić zmiany do bazy danych
+- Filtrować, wyszukiwać i eksportować dane
