@@ -1,0 +1,73 @@
+﻿<Window x:Class="DocumentManagerWPF.ImportPreviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Podgląd importu" Height="600" Width="950" ResizeMode="CanResize">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Documents" Grid.Row="0" Margin="0,0,0,5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,5">
+                    <Button x:Name="ToggleDocsFilterButton" Content="Pokaż tylko błędne"
+                            Width="150" Margin="5" Click="ToggleDocsFilterButton_Click"/>
+                </StackPanel>
+
+                <DataGrid x:Name="DocumentsDataGrid" Grid.Row="1"
+                          AutoGenerateColumns="False" CanUserAddRows="False"
+                          CanUserDeleteRows="False" IsReadOnly="False"
+                          AlternatingRowBackground="LightGray" RowBackground="White">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
+                        <DataGridTextColumn Header="Date" Binding="{Binding Date}"/>
+                        <DataGridTextColumn Header="FirstName" Binding="{Binding FirstName}"/>
+                        <DataGridTextColumn Header="LastName" Binding="{Binding LastName}"/>
+                        <DataGridTextColumn Header="City" Binding="{Binding City}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Document Items" Grid.Row="1" Margin="0,5,0,5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,5">
+                    <Button x:Name="ToggleItemsFilterButton" Content="Pokaż tylko błędne"
+                            Width="150" Margin="5" Click="ToggleItemsFilterButton_Click"/>
+                </StackPanel>
+
+                <DataGrid x:Name="ItemsDataGrid" Grid.Row="1"
+                          AutoGenerateColumns="False" CanUserAddRows="False"
+                          CanUserDeleteRows="False" IsReadOnly="False"
+                          AlternatingRowBackground="LightGray" RowBackground="White">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="DocumentId" Binding="{Binding DocumentId}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Ordinal" Binding="{Binding Ordinal}"/>
+                        <DataGridTextColumn Header="Product" Binding="{Binding Product}"/>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}"/>
+                        <DataGridTextColumn Header="Price" Binding="{Binding Price}"/>
+                        <DataGridTextColumn Header="TaxRate" Binding="{Binding TaxRate}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </GroupBox>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button x:Name="CancelButton" Content="Anuluj" Width="100" Margin="5" Click="CancelButton_Click"/>
+            <Button x:Name="ConfirmButton" Content="Zatwierdź import" Width="150" Margin="5" Click="ConfirmButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

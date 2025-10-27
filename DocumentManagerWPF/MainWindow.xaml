@@ -1,12 +1,98 @@
 ﻿<Window x:Class="DocumentManagerWPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DocumentManagerWPF"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Document Manager"
+        Width="1200" Height="750"
+        MinWidth="900" MinHeight="600"
+        ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen">
 
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Pasek przycisków -->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <Button Content="Import CSV"
+                    Width="150" Height="40"
+                    Click="ImportButton_Click"
+                    Margin="0,0,10,0"/>
+            <Button Content="Odśwież"
+                    Width="120" Height="40"
+                    Click="RefreshButton_Click"
+                    Margin="0,0,10,0"/>
+            <Button Content="Zapisz zmiany"
+                    Width="150" Height="40"
+                    Click="SaveChangesButton_Click"
+                    Margin="0,0,10,0"/>
+            <Button Content="Eksportuj do CSV"
+                    Width="150" Height="40" 
+                    Click="ExportButton_Click" 
+                    Margin="0,0,10,0"/>
+
+            <!-- Wyszukiwarka -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,0,0,0">
+                <TextBlock Text="Szukaj:" VerticalAlignment="Center" Margin="20,0,5,0"/>
+                <TextBox x:Name="SearchBox"
+                         Width="250" Height="28"
+                         VerticalAlignment="Center"
+                         Margin="0,0,10,0"/>
+                <Button Content="Filtruj"
+                        Padding="15,6"
+                        Click="SearchButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Główny obszar z dwoma DataGridami -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Lista dokumentów -->
+            <DataGrid x:Name="DocumentsDataGrid"
+                      Grid.Row="0"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="False"
+                      SelectionMode="Single"
+                      SelectionChanged="DocumentsDataGrid_SelectionChanged"
+                      CanUserAddRows="False"
+                      Margin="0,0,0,5"
+                      ColumnWidth="*">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True" Width="Auto"/>
+                    <DataGridTextColumn Header="Typ" Binding="{Binding Type}" />
+                    <DataGridTextColumn Header="Data" Binding="{Binding Date}" />
+                    <DataGridTextColumn Header="Imię" Binding="{Binding FirstName}" />
+                    <DataGridTextColumn Header="Nazwisko" Binding="{Binding LastName}" />
+                    <DataGridTextColumn Header="Miasto" Binding="{Binding City}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Background="LightGray"/>
+
+            <!-- Pozycje dokumentu -->
+            <DataGrid x:Name="ItemsDataGrid"
+                      Grid.Row="2"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="False"
+                      CanUserAddRows="False"
+                      Margin="0,5,0,0"
+                      ColumnWidth="*">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID dokumentu" Binding="{Binding DocumentId}" IsReadOnly="True" Width="Auto"/>
+                    <DataGridTextColumn Header="Lp." Binding="{Binding Ordinal}" />
+                    <DataGridTextColumn Header="Produkt" Binding="{Binding Product}" />
+                    <DataGridTextColumn Header="Ilość" Binding="{Binding Quantity}" />
+                    <DataGridTextColumn Header="Cena" Binding="{Binding Price}" />
+                    <DataGridTextColumn Header="VAT (%)" Binding="{Binding TaxRate}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </Window>
