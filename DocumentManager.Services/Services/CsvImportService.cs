@@ -1,4 +1,4 @@
-﻿using CsvHelper;
+using CsvHelper;
 using CsvHelper.Configuration;
 using DocumentManager.Data;
 using DocumentManager.Domain;
@@ -29,65 +29,79 @@ namespace DocumentManager.Services
 
             ValidateCsvData(documentsCsv, itemsCsv);
 
-            var originalIdToEntity = new Dictionary<int, Document>();
-            var documentEntities = new List<Document>();
+            var existingDocs = await _context.Documents.ToListAsync();
+            var existingItems = await _context.DocumentItems.ToListAsync();
+
+            int docsAdded = 0, docsUpdated = 0;
+            int itemsAdded = 0, itemsUpdated = 0;
+
 
             foreach (var d in documentsCsv)
             {
-                var ent = new Document
+                var existing = existingDocs.FirstOrDefault(x => x.Id == d.Id);
+                if (existing == null)
                 {
-                    Type = d.Type,
-                    Date = d.Date,
-                    FirstName = d.FirstName,
-                    LastName = d.LastName,
-                    City = d.City
-                };
-                documentEntities.Add(ent);
-                originalIdToEntity[d.Id] = ent;
-            }
-
-            var documentItemEntities = itemsCsv.Select(i => new DocumentItems
-            {
-                DocumentId = i.DocumentId,
-                Ordinal = i.Ordinal,
-                Product = i.Product,
-                Quantity = i.Quantity,
-                Price = i.Price,
-                TaxRate = i.TaxRate
-            }).ToList();
-
-            var existingItems = await _context.DocumentItems.ToListAsync();
-            if (existingItems.Any()) _context.DocumentItems.RemoveRange(existingItems);
-
-            var existingDocs = await _context.Documents.ToListAsync();
-            if (existingDocs.Any()) _context.Documents.RemoveRange(existingDocs);
-
-            await _context.SaveChangesAsync();
-
-            _context.Documents.AddRange(documentEntities);
-            await _context.SaveChangesAsync();
-
-            var mapping = originalIdToEntity.ToDictionary(
-                kv => kv.Key,
-                kv => kv.Value.Id
-            );
-
-            foreach (var it in documentItemEntities)
-            {
-                if (mapping.TryGetValue(it.DocumentId, out var newDocId))
-                {
-                    it.DocumentId = newDocId;
+                    var newDoc = new Document
+                    {
+                        Id = d.Id,
+                        Type = d.Type,
+                        Date = d.Date,
+                        FirstName = d.FirstName,
+                        LastName = d.LastName,
+                        City = d.City
+                    };
+                    _context.Documents.Add(newDoc);
+                    docsAdded++;
                 }
                 else
                 {
-                    throw new InvalidOperationException($"Brak dokumentu w CSV o Id={it.DocumentId} (pozycja Ordinal={it.Ordinal}).");
+                    existing.Type = d.Type;
+                    existing.Date = d.Date;
+                    existing.FirstName = d.FirstName;
+                    existing.LastName = d.LastName;
+                    existing.City = d.City;
+                    _context.Documents.Update(existing);
+                    docsUpdated++;
                 }
             }
 
-            _context.DocumentItems.AddRange(documentItemEntities);
             await _context.SaveChangesAsync();
-        }
 
+            foreach (var i in itemsCsv)
+            {
+                var existingItem = existingItems.FirstOrDefault(x =>
+                    x.DocumentId == i.DocumentId && x.Ordinal == i.Ordinal);
+
+                if (existingItem == null)
+                {
+                    var newItem = new DocumentItems
+                    {
+                        DocumentId = i.DocumentId,
+                        Ordinal = i.Ordinal,
+                        Product = i.Product,
+                        Quantity = i.Quantity,
+                        Price = i.Price,
+                        TaxRate = i.TaxRate
+                    };
+                    _context.DocumentItems.Add(newItem);
+                    itemsAdded++;
+                }
+                else
+                {
+                    existingItem.Product = i.Product;
+                    existingItem.Quantity = i.Quantity;
+                    existingItem.Price = i.Price;
+                    existingItem.TaxRate = i.TaxRate;
+                    _context.DocumentItems.Update(existingItem);
+                    itemsUpdated++;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            Console.WriteLine($"[IMPORT CSV] Dodano: {docsAdded} dokumentów, zaktualizowano: {docsUpdated}");
+            Console.WriteLine($"[IMPORT CSV] Dodano: {itemsAdded} pozycji, zaktualizowano: {itemsUpdated}");
+        }
 
         private static List<T> ReadCsv<T>(string path)
         {
