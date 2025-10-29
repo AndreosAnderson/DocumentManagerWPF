@@ -42,3 +42,15 @@ W aplikacji możesz:
 - Edytować dokumenty i ich pozycje
 - Zatwierdzić zmiany do bazy danych
 - Filtrować, wyszukiwać i eksportować dane
+
+## Run with script
+
+Aby uruchomić aplikację bezpośrednio z terminala (np. Git Bash lub PowerShell), możesz użyć prostego skryptu:
+
+### Windows (run.bat)
+```bat
+@echo off
+dotnet build DocumentManagerWPF.sln
+dotnet run --project DocumentManagerWPF/DocumentManagerWPF.csproj
+pause
+
