@@ -47,7 +47,7 @@ W aplikacji możesz:
 
 Aby uruchomić aplikację bezpośrednio z terminala (np. Git Bash lub PowerShell), możesz użyć prostego skryptu:
 
-### Windows (run.bat)
+## Windows (run.bat)**
 ```bat
 @echo off
 dotnet build DocumentManagerWPF.sln
